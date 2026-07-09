@@ -9,12 +9,20 @@ app = FastAPI(
     version="0.1.0",
 )
 
+import os
+
+_cors_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://filaviva.vercel.app",
+]
+_extra = os.getenv("CORS_ORIGINS", "")
+if _extra:
+    _cors_origins.extend([o.strip() for o in _extra.split(",") if o.strip()])
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

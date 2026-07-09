@@ -32,6 +32,26 @@
 
 ---
 
+## 🌐 Live Demo
+
+**Demo pública (lab):** [https://filaviva.vercel.app](https://filaviva.vercel.app)
+
+| Atalho | URL |
+|---|---|
+| One-click lab (simular → risco → comparar) | [/lab](https://filaviva.vercel.app/lab) |
+| Dashboard Demo | [/demo](https://filaviva.vercel.app/demo) |
+| Comparação | [/comparison](https://filaviva.vercel.app/comparison) |
+| Risco | [/risk-reliability](https://filaviva.vercel.app/risk-reliability) |
+
+> **Lab notice:** a demo pública usa um **snapshot pré-computado** (`frontend/public/demo/snapshot.json`) com dados sintéticos. Não é produção de call center. Simulações customizadas exigem o backend local.
+
+Para regenerar o snapshot:
+```bash
+backend\.venv\Scripts\python.exe scripts\generate_public_snapshot.py
+```
+
+---
+
 ## 1. Visão Geral / Overview
 
 O **FilaViva** (também referido como *Plantão Vivo*) é um simulador operacional para filas de atendimento. Ele permite configurar cenários hipotéticos de capacidade, no-show, overbooking e agenda, simular de **100 a 2000 dias** com dados sintéticos reproduzíveis e comparar métricas de espera, utilização, overtime e risco **antes** de alterar a operação real.
@@ -294,6 +314,9 @@ REST API → Next.js UI (Demo / Results / Compare / Risk / Brief)
 - **Node.js** 20+
 - **Python** 3.12+
 - **Git**
+
+### Deploy público (Vercel)
+O frontend em `frontend/` é deployável na Vercel com `NEXT_PUBLIC_USE_STATIC_DEMO=1` (já em `.env.production`). A demo pública **não depende** de FastAPI hospedado — o fluxo `/lab` lê o snapshot estático.
 
 ### 1. Backend FastAPI (a partir da raiz do monorepo)
 

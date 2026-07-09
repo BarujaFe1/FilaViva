@@ -2,13 +2,14 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/layout/Header"
+import LabBanner from "@/components/layout/LabBanner"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "FilaViva — Simulador Operacional",
+  title: "FilaViva — Simulador Operacional (Lab Demo)",
   description:
-    "Simulador operacional para filas de atendimento. Teste cenários de capacidade, no-show e agenda antes de mudar a operação real.",
+    "Lab demo pública: simule filas de atendimento com dados sintéticos, score de risco e comparação de cenários. Não é produção de call center.",
 }
 
 export default function RootLayout({
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
+        <LabBanner />
         <Header />
         <main className="min-h-screen bg-slate-50">{children}</main>
       </body>
