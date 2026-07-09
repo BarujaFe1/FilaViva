@@ -34,14 +34,14 @@
 
 ## 🌐 Live Demo
 
-**Demo pública (lab):** [https://filaviva.vercel.app](https://filaviva.vercel.app)
+**Demo pública (lab):** [https://filaviva-alpha.vercel.app](https://filaviva-alpha.vercel.app)
 
 | Atalho | URL |
 |---|---|
-| One-click lab (simular → risco → comparar) | [/lab](https://filaviva.vercel.app/lab) |
-| Dashboard Demo | [/demo](https://filaviva.vercel.app/demo) |
-| Comparação | [/comparison](https://filaviva.vercel.app/comparison) |
-| Risco | [/risk-reliability](https://filaviva.vercel.app/risk-reliability) |
+| One-click lab (simular → risco → comparar) | [/lab](https://filaviva-alpha.vercel.app/lab) |
+| Dashboard Demo | [/demo](https://filaviva-alpha.vercel.app/demo) |
+| Comparação | [/comparison](https://filaviva-alpha.vercel.app/comparison) |
+| Risco | [/risk-reliability](https://filaviva-alpha.vercel.app/risk-reliability) |
 
 > **Lab notice:** a demo pública usa um **snapshot pré-computado** (`frontend/public/demo/snapshot.json`) com dados sintéticos. Não é produção de call center. Simulações customizadas exigem o backend local.
 
