@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0",
+  "simulation_method": "Event-based discrete simulation per operating day",
+  "data_source": "Synthetic data generator with configurable seed",
+  "distributions": {
+    "service_duration": "Lognormal(mean=avg_service_duration, sigma=service_duration_std)",
+    "arrival_delay": "Normal(mean=5, std=5), truncated at 0",
+    "no_show": "Bernoulli(no_show_rate)",
+    "walk_ins": "Poisson(walk_in_rate * total_slots) per day"
+  },
+  "arrival_patterns": {
+    "uniform": "Equal probability across all time slots",
+    "peaked_morning": "50% concentration in first third of the day",
+    "peaked_afternoon": "50% concentration in last third of the day",
+    "double_peak": "Peaks at early morning and early afternoon"
+  },
+  "risk_score_formula": "Risk = 0.25 * (p95 / SLA) + 0.25 * SLA_breach_rate + 0.20 * overtime_prob + 0.15 * clamp(utilization - 0.85, 0, 0.15)/0.15 + 0.15 * (p90_std / p90)",
+  "risk_score_weights": "Demonstrative, not validated against real operations",
+  "key_limitations": [
+    "Synthetic data only — does not reflect real patient or customer behavior",
+    "Does not model seasonality beyond day-of-week variation",
+    "Assumes independent arrivals within each day",
+    "Service duration distribution is estimated, not measured",
+    "No learning effects or server fatigue modeled",
+    "No queue priority differentiation beyond FIFO",
+    "Not a clinical or medical decision support tool",
+    "Does not replace on-site operational evaluation"
+  ]
+}

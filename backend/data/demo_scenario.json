@@ -1,0 +1,19 @@
+{
+  "scenario_id": null,
+  "name": "Opera\u00e7\u00e3o Equilibrada (Demo)",
+  "seed": 42,
+  "days_to_simulate": 500,
+  "opening_time": "08:00",
+  "closing_time": "18:00",
+  "slot_interval_minutes": 20,
+  "num_servers": 4,
+  "avg_service_duration_minutes": 20.0,
+  "service_duration_std": 5.0,
+  "arrival_pattern": "double_peak",
+  "no_show_rate": 0.1,
+  "walk_in_rate": 0.05,
+  "overbooking_rate": 0.05,
+  "max_overtime_minutes": 30,
+  "sla_wait_minutes": 30,
+  "abandonment_threshold_minutes": 60
+}

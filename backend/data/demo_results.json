@@ -1,0 +1,18 @@
+{
+  "total_appointments": 16462,
+  "total_attended": 14944,
+  "avg_wait": 0.14517376685079184,
+  "median_wait": 0.0,
+  "p90_wait": 0.0,
+  "p95_wait": 0.0,
+  "max_wait": 23.168789035531404,
+  "wait_std": 1.0949354011316481,
+  "utilization_rate": 0.24896824833203213,
+  "avg_overtime_minutes": 2.872745632948958,
+  "overtime_probability": 0.322,
+  "sla_breach_rate": 0.0,
+  "abandonment_rate": 0.0,
+  "variability": 7.542240067773483,
+  "sla_wait_minutes": 30,
+  "risk_score": 21.4
+}
