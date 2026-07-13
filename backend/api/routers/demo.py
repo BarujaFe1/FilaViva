@@ -1,12 +1,16 @@
+import json
 from datetime import datetime, timezone
+from pathlib import Path
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from backend.api.schemas import ScenarioConfig, SimulationRun
 from backend.api.routers.simulations import _run_simulation, _save_run
 from backend.engine.risk_score import compute_risk_score
 
 router = APIRouter(tags=["demo"])
+
+DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 
 DEMO_CONFIG = ScenarioConfig(
     scenario_id="demo",
@@ -29,14 +33,7 @@ DEMO_CONFIG = ScenarioConfig(
 )
 
 
-@router.get("/demo/default")
-async def get_default_demo() -> SimulationRun:
-    _, metrics = _run_simulation(DEMO_CONFIG)
-    metrics["sla_wait_minutes"] = DEMO_CONFIG.sla_wait_minutes
-    metrics["risk_score"] = compute_risk_score(metrics)
-    # Persist so /risk/components/demo and related pages can resolve the run.
-    _save_run("demo", DEMO_CONFIG, metrics)
-
+def _metrics_to_run(metrics: dict) -> SimulationRun:
     return SimulationRun(
         run_id="demo",
         scenario_id="demo",
@@ -57,3 +54,36 @@ async def get_default_demo() -> SimulationRun:
         abandonment_rate=round(metrics["abandonment_rate"], 4),
         risk_score=metrics["risk_score"],
     )
+
+
+def _load_cached_metrics() -> dict | None:
+    path = DATA_DIR / "demo_results.json"
+    if not path.exists():
+        return None
+    with open(path, encoding="utf-8") as f:
+        metrics = json.load(f)
+    if "risk_score" not in metrics:
+        metrics["sla_wait_minutes"] = DEMO_CONFIG.sla_wait_minutes
+        metrics["risk_score"] = compute_risk_score(metrics)
+    return metrics
+
+
+@router.get("/demo/default")
+async def get_default_demo(live: bool = Query(False, description="Force live recompute")) -> SimulationRun:
+    """
+    Default demo run.
+
+    By default serves `backend/data/demo_results.json` when present (fast, reproducible).
+    Pass `?live=1` to recompute with the engine.
+    """
+    metrics: dict | None = None
+    if not live:
+        metrics = _load_cached_metrics()
+
+    if metrics is None:
+        _, metrics = _run_simulation(DEMO_CONFIG)
+        metrics["sla_wait_minutes"] = DEMO_CONFIG.sla_wait_minutes
+        metrics["risk_score"] = compute_risk_score(metrics)
+
+    _save_run("demo", DEMO_CONFIG, metrics)
+    return _metrics_to_run(metrics)

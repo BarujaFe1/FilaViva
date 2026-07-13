@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -5,11 +7,9 @@ from backend.api.routers import scenarios, simulations, demo, methodology
 
 app = FastAPI(
     title="FilaViva API",
-    description="Operational queue simulation engine",
+    description="Operational queue simulation engine (synthetic data lab)",
     version="0.1.0",
 )
-
-import os
 
 _cors_origins = [
     "http://localhost:3000",

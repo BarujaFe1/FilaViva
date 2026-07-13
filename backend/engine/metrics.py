@@ -57,7 +57,8 @@ def compute_metrics(
         "overtime_probability": days_with_overtime / config.days_to_simulate,
         "sla_breach_rate": len([a for a in attended if a.sla_breached]) / num_attended if num_attended > 0 else 0,
         "abandonment_rate": num_abandoned / (num_attended + num_abandoned) if (num_attended + num_abandoned) > 0 else 0,
-        "variability": float(np.std(wait_times)) / float(np.mean(wait_times)) if float(np.mean(wait_times)) > 0 else 0,
+        # Dispersion relative to SLA (stable when p90/mean ≈ 0). Clamped in risk_score.
+        "variability": float(np.std(wait_times)) / max(float(config.sla_wait_minutes), 1.0),
     }
 
 
@@ -76,5 +77,5 @@ def _empty_metrics() -> dict:
         "overtime_probability": 0.0,
         "sla_breach_rate": 0.0,
         "abandonment_rate": 0.0,
-        "p90_std": 0.0,
+        "variability": 0.0,
     }

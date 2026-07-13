@@ -7,6 +7,7 @@ import { fetchPresets } from "@/lib/api"
 interface ScenarioFormProps {
   initial?: ScenarioConfig
   onSubmit: (config: ScenarioConfig) => void
+  onChange?: (config: ScenarioConfig) => void
   submitLabel?: string
   disabled?: boolean
 }
@@ -61,6 +62,7 @@ const inputClass =
 export default function ScenarioForm({
   initial,
   onSubmit,
+  onChange,
   submitLabel = "Simular",
   disabled,
 }: ScenarioFormProps) {
@@ -77,11 +79,17 @@ export default function ScenarioForm({
   }, [])
 
   function update<K extends keyof ScenarioConfig>(key: K, value: ScenarioConfig[K]) {
-    setConfig((prev) => ({ ...prev, [key]: value }))
+    setConfig((prev) => {
+      const next = { ...prev, [key]: value }
+      onChange?.(next)
+      return next
+    })
   }
 
   function applyPreset(preset: Preset) {
-    setConfig({ ...DEFAULT_CONFIG, ...preset.config, name: preset.name })
+    const next = { ...DEFAULT_CONFIG, ...preset.config, name: preset.name }
+    setConfig(next)
+    onChange?.(next)
   }
 
   return (

@@ -16,6 +16,8 @@ class Simulator:
     def run(self, appointments: list[Appointment]) -> list[Appointment]:
         opening = self._time_to_minutes(self.config.opening_time)
         closing = self._time_to_minutes(self.config.closing_time)
+        # Hard stop for starting new services (closing + allowed overtime window).
+        latest_start = closing + self.config.max_overtime_minutes
         num_servers = self.config.num_servers
         sla_threshold = self.config.sla_wait_minutes
         abandon_threshold = self.config.abandonment_threshold_minutes
@@ -44,6 +46,11 @@ class Simulator:
                     continue
 
                 service_start = max(app.arrival_time, next_available)
+                # Capacity exhausted beyond the overtime window — do not start.
+                if service_start > latest_start:
+                    app.abandoned = True
+                    continue
+
                 service_end = service_start + app.service_duration
 
                 app.service_start = service_start

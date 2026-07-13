@@ -12,7 +12,7 @@
   "overtime_probability": 0.322,
   "sla_breach_rate": 0.0,
   "abandonment_rate": 0.0,
-  "variability": 7.542240067773483,
+  "variability": 0.03649784670438827,
   "sla_wait_minutes": 30,
-  "risk_score": 21.4
+  "risk_score": 7.0
 }

@@ -35,10 +35,16 @@ Todo cenário aceita uma seed inteira. Mesma seed + mesmos parâmetros → mesmo
 ## Risk Score
 
 Composição demonstrativa:
-- 25% p95 normalizado pelo SLA
+- 25% p95 normalizado pelo SLA (`min(p95/SLA, 2)`)
 - 25% taxa de SLA breach
 - 20% probabilidade de overtime
 - 15% utilização excessiva (acima de 85%)
-- 15% variabilidade do p90
+- 15% variabilidade relativa (`std(wait) / SLA`, clamp em 1.0)
 
 Os pesos são ilustrativos e não representam validação operacional real.
+
+## Overtime
+
+- `overtime_flag` é marcado quando `service_end > closing_time`.
+- Novos atendimentos **não começam** após `closing_time + max_overtime_minutes`
+  (janela dura de capacidade em overtime).

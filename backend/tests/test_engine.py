@@ -1,9 +1,8 @@
-import numpy as np
 from backend.api.schemas import ScenarioConfig
 from backend.engine.generator import AppointmentGenerator
 from backend.engine.simulator import Simulator
 from backend.engine.metrics import compute_metrics
-from backend.engine.risk_score import compute_risk_score
+from backend.engine.risk_score import compute_risk_score, compute_risk_components
 
 
 def _make_config(**kwargs) -> ScenarioConfig:
@@ -193,3 +192,36 @@ def test_no_abandonment_when_wait_low():
     results = sim.run(apps)
     metrics = compute_metrics(results, config)
     assert metrics["abandonment_rate"] == 0
+
+
+def test_max_overtime_caps_new_starts():
+    """With zero overtime budget, services cannot start after closing."""
+    config = _make_config(
+        seed=42,
+        num_servers=1,
+        days_to_simulate=100,
+        max_overtime_minutes=0,
+        abandonment_threshold_minutes=240,
+        overbooking_rate=0.3,
+        no_show_rate=0,
+    )
+    gen = AppointmentGenerator(config)
+    sim = Simulator(config)
+    results = sim.run(gen.generate())
+    closing = 18 * 60
+    attended = [a for a in results if not a.no_show and not a.abandoned]
+    assert all(
+        a.service_start is not None and a.service_start <= closing for a in attended
+    )
+
+
+def test_variability_scaled_to_sla():
+    """Wait std is normalized by SLA so low-wait demos are not always maxed at 100."""
+    config = _make_config(seed=42, days_to_simulate=200, num_servers=6, sla_wait_minutes=30)
+    gen = AppointmentGenerator(config)
+    sim = Simulator(config)
+    metrics = compute_metrics(sim.run(gen.generate()), config)
+    metrics["sla_wait_minutes"] = config.sla_wait_minutes
+    components = compute_risk_components(metrics)
+    assert components["variability"] < 50.0
+    assert 0 <= metrics["variability"] <= 1.0 or metrics["variability"] < 2.0

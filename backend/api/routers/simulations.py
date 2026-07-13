@@ -129,7 +129,6 @@ async def get_simulation(run_id: str) -> SimulationRun | None:
 def _generate_brief(base_metrics: dict, alt_metrics: dict) -> str:
     delta_p95 = alt_metrics["p95_wait"] - base_metrics["p95_wait"]
     delta_util = alt_metrics["utilization_rate"] - base_metrics["utilization_rate"]
-    delta_overtime = alt_metrics["overtime_probability"] - base_metrics["overtime_probability"]
     delta_risk = alt_metrics["risk_score"] - base_metrics["risk_score"]
 
     parts = []

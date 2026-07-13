@@ -14,7 +14,8 @@
     "peaked_afternoon": "50% concentration in last third of the day",
     "double_peak": "Peaks at early morning and early afternoon"
   },
-  "risk_score_formula": "Risk = 0.25 * (p95 / SLA) + 0.25 * SLA_breach_rate + 0.20 * overtime_prob + 0.15 * clamp(utilization - 0.85, 0, 0.15)/0.15 + 0.15 * (p90_std / p90)",
+  "risk_score_formula": "Risk = 0.25 * min(p95/SLA, 2) + 0.25 * SLA_breach_rate + 0.20 * overtime_prob + 0.15 * clamp((utilization-0.85)/0.15, 0, 1) + 0.15 * clamp(wait_std/SLA, 0, 1)",
+  "overtime_policy": "overtime_flag when service_end > closing; new starts blocked after closing + max_overtime_minutes",
   "risk_score_weights": "Demonstrative, not validated against real operations",
   "key_limitations": [
     "Synthetic data only — does not reflect real patient or customer behavior",

@@ -13,6 +13,7 @@ node_modules/
 .next/
 out/
 *.tsbuildinfo
+.vercel/
 
 # IDE
 .vscode/
@@ -46,6 +47,10 @@ htmlcov/
 .env
 .env.local
 .env.*.local
+!.env.example
+# Keep production static-demo flag example tracked
+!frontend/.env.production
+!frontend/.env.example
 
 # Logs
 *.log

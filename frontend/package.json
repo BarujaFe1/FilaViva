@@ -6,15 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^2.13.0",
-    "lucide-react": "^0.460.0",
-    "@tanstack/react-table": "^8.20.0"
+    "recharts": "^2.13.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
